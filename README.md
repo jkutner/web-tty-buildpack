@@ -31,3 +31,7 @@ $ pack build -b jkutner/web-tty -e WEB_TTY_COMMAND=python myapp
 ```
 
 If the terminal session is not your primary web process, you can override the port it uses by setting `WEB_TTY_PORT` at run-time. By defaul it will use `PORT` or `3000`.
+
+## How it works
+
+This buildpack installs [wetty](https://github.com/butlerx/wetty) into your image.
