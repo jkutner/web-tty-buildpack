@@ -62,10 +62,11 @@ port=\${WEB_TTY_PORT:-\$PORT}
 npx wetty --host 0.0.0.0 -port \${port:-3000} --title wetty -base / \
   --ssh-key $wetty_layer/.ssh/wetty \
   --ssh-host localhost \
-  --ssh-user $(whoami) \
+  --ssh-user \$(whoami) \
   --ssh-port 2222 \
   --ssh-auth publickey
 BASH
+chmod +x wetty.sh
 
 cat <<TOML > ${wetty_layer}.toml
 launch = true
@@ -77,7 +78,7 @@ TOML
 cat <<TOML > ${layers_dir}/launch.toml
 [[processes]]
 type = "web"
-command = "bash wetty.sh"
+command = "./wetty.sh"
 
 [[processes]]
 type = "bash"
