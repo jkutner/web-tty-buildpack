@@ -24,10 +24,10 @@ Open a browser to `localhost:3000` and you'll see something like:
 
 ## Customizing
 
-By default, the buildpack starts the terminal in a bash session. But you can override this with the `WEB_TTY_COMMAND` env var at build-time. For example, the following command will start the session in a Python REPL:
+By default, the buildpack starts the terminal in a bash session. But you can override this with the `WEB_TTY_CMD` env var at build-time. For example, the following command will start the session in a Python REPL:
 
 ```
-$ pack build -b jkutner/web-tty -e WEB_TTY_COMMAND=python myapp
+$ pack build -b jkutner/web-tty -e WEB_TTY_CMD=python myapp
 ```
 
 If the terminal session is not your primary web process, you can override the port it uses by setting `WEB_TTY_PORT` at run-time. By defaul it will use `PORT` or `3000`.

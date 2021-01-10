@@ -42,7 +42,7 @@ else
   chmod 600 $wetty_layer/.ssh/wetty
 fi
 
-force_command="${WEB_TTY_COMMAND:-"bash"}"
+force_command="${WEB_TTY_CMD:-"bash"}"
 
 cat << EOF > $wetty_layer/.ssh/sshd_config
 HostKey $wetty_layer/.ssh/wetty
