@@ -5,7 +5,7 @@ This is a [Cloud Native Buildpack](https://buildpacks.io) that create a terminal
 ## Usage
 
 ```
-$ echo '{"engines":{ "node":"14.x"}}' > package.json
+$ echo '{"engines":{"node":"14.x"}}' > package.json
 $ touch requirements.txt
 $ pack build --buildpack jkutner/web-tty myapp
 ```
