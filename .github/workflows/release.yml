@@ -23,6 +23,7 @@ jobs:
               name: Setup Pack
               uses: buildpacks/github-actions/setup-pack@v4.0.0
             - id: package
+              name: Package Buildpack
               run: |
                 #!/usr/bin/env bash
                 set -euo pipefail
