@@ -42,10 +42,12 @@ else
   chmod 600 $wetty_layer/.ssh/wetty
 fi
 
+force_command="${WEB_TTY_COMMAND:-"bash"}"
+
 cat << EOF > $wetty_layer/.ssh/sshd_config
 HostKey $wetty_layer/.ssh/wetty
 AuthorizedKeysFile $wetty_layer/.ssh/authorized_keys
-ForceCommand bash -c "HOME=/workspace /cnb/lifecycle/launcher bash"
+ForceCommand bash -c "HOME=/workspace /cnb/lifecycle/launcher $force_command"
 EOF
 
 npm install "$wetty_layer/node_modules/wetty"
@@ -55,7 +57,9 @@ cat <<BASH > wetty.sh
 
 /usr/sbin/sshd -f $wetty_layer/.ssh/sshd_config -o "Port 2222"
 
-npx wetty --host 0.0.0.0 -port \${PORT:-3000} --title wetty -base / \
+port=\${WEB_TTY_PORT:-\$PORT}
+
+npx wetty --host 0.0.0.0 -port \${port:-3000} --title wetty -base / \
   --ssh-key $wetty_layer/.ssh/wetty \
   --ssh-host localhost \
   --ssh-user $(whoami) \
