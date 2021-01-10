@@ -30,7 +30,7 @@ By default, the buildpack starts the terminal in a bash session. But you can ove
 $ pack build -b jkutner/web-tty -e WEB_TTY_CMD=python myapp
 ```
 
-If the terminal session is not your primary web process, you can override the port it uses by setting `WEB_TTY_PORT` at run-time. By defaul it will use `PORT` or `3000`.
+If the terminal session is not your primary web process, you can override the port it uses by setting `WEB_TTY_PORT` at run-time. By defaul it will use `PORT` or `3000`. Then have you primary web process run the `wetty.sh` script in the background, and your primary HTTP server and proxy to your `WEB_TTY_PORT` port.
 
 ## How it works
 

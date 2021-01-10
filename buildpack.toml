@@ -19,3 +19,8 @@ description = "Terminal access in browser over http/https"
   [[order.group]]
     id = "jkutner/wetty"
     version = "0.1.0"
+
+  [[order.group]]
+    id = "heroku/procfile"
+    version = "0.6"
+    optional = true
