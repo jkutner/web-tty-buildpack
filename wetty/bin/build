@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -eu
+
+layers_dir="$1"
+env_dir="$2/env"
+plan_path="$3"
+
+if compgen -G "${env_dir}/*" > /dev/null; then
+  for var in ${env_dir}/*; do
+    declare "$(basename ${var})=$(<${var})"
+  done
+fi
+
+echo "[wetty]"
+wetty_layer=$layers_dir/wetty
+wetty_version="2.0.2"
+
+if [ -f ${wetty_layer}.toml ] && [ "$(cat "${wetty_layer}.toml" | yj -t | jq .metadata.version -r)" == "${wetty_version}" ]; then
+  echo "Using cached version: ${wetty_version}"
+  touch ${wetty_layer}.toml
+else
+  echo "Installing version: ${wetty_version}"
+  mkdir -p $wetty_layer/env
+  npm install --prefix $wetty_layer wetty@${wetty_version}
+
+  echo -n "$wetty_layer/node_modules" > $wetty_layer/env/NODE_PATH
+
+  echo "Generate OpenSSL certificates"
+  mkdir -p $wetty_layer/.ssl
+  openssl req -x509 -nodes -days 1095 -newkey ec:<(openssl ecparam -name secp384r1) -subj "/C=GB/ST=None/L=None/O=None/OU=None/CN=None" -out $wetty_layer/.ssl/wetty.crt -keyout $wetty_layer/.ssl/wetty.key
+  chmod 700 $wetty_layer/.ssl
+  chmod 644 $wetty_layer/.ssl/wetty.crt
+  chmod 600 $wetty_layer/.ssl/wetty.key
+
+  echo "Generate the ssh key file"
+  mkdir -p $wetty_layer/.ssh
+  ssh-keygen -q -C "wetty-keyfile" -t ed25519 -N '' -f $wetty_layer/.ssh/wetty 2>/dev/null <<< y >/dev/null
+  cat $wetty_layer/.ssh/wetty.pub >> $wetty_layer/.ssh/authorized_keys
+  chmod 700 $wetty_layer/.ssh
+  chmod 644 $wetty_layer/.ssh/authorized_keys
+  chmod 600 $wetty_layer/.ssh/wetty
+fi
+
+cat << EOF > $wetty_layer/.ssh/sshd_config
+HostKey $wetty_layer/.ssh/wetty
+AuthorizedKeysFile $wetty_layer/.ssh/authorized_keys
+ForceCommand bash -c "HOME=/workspace /cnb/lifecycle/launcher bash"
+EOF
+
+npm install "$wetty_layer/node_modules/wetty"
+
+cat <<BASH > wetty.sh
+#!/bin/bash
+
+/usr/sbin/sshd -f $wetty_layer/.ssh/sshd_config -o "Port 2222"
+
+npx wetty --host 0.0.0.0 -port \${PORT:-3000} --title wetty -base / \
+  --ssh-key $wetty_layer/.ssh/wetty \
+  --ssh-host localhost \
+  --ssh-user $(whoami) \
+  --ssh-port 2222 \
+  --ssh-auth publickey
+BASH
+
+cat <<TOML > ${wetty_layer}.toml
+launch = true
+cache = true
+[metadata]
+version = "${wetty_version}"
+TOML
+
+cat <<TOML > ${layers_dir}/launch.toml
+[[processes]]
+type = "web"
+command = "bash wetty.sh"
+
+[[processes]]
+type = "bash"
+command = "/bin/bash"
+TOML
