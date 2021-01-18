@@ -1,5 +1,7 @@
 # Web TTY Buildpack
 
+![Version](https://img.shields.io/badge/dynamic/json?url=https://cnb-registry-api.herokuapp.com/api/v1/buildpacks/jkutner/web-tty&label=Version&query=$.latest.version)
+
 This is a [Cloud Native Buildpack](https://buildpacks.io) that create a terminal session in a browser for your container.
 
 ## Usage
