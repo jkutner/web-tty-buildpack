@@ -4,6 +4,8 @@
 
 This is a [Cloud Native Buildpack](https://buildpacks.io) that create a terminal session in a browser for your container.
 
+You can build this using [pack](https://buildpacks.io/docs/tools/pack/).
+
 ## Usage
 
 ```
@@ -17,7 +19,7 @@ You can add other buildpacks using the `--buildpack` option (or `-b` for short) 
 Then run your app
 
 ```
-docker -it -p 3000:3000 myapp
+docker run -it -p 3000:3000 myapp
 ```
 
 Open a browser to `localhost:3000` and you'll see something like:
