@@ -7,7 +7,9 @@ name = "Web TTY"
 homepage = "https://github.com/jkutner/web-tty-buildpack"
 description = "Terminal access to a container in a browser over http/https"
 keywords = ["terminal", "wetty", "sshd"]
-license = "MIT"
+
+[[buildpack.licenses]]
+type = "MIT"
 
 [[order]]
   [[order.group]]
