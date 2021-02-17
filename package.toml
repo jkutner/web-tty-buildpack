@@ -8,7 +8,7 @@ uri = "https://github.com/heroku/nodejs-engine-buildpack/releases/download/v0.7.
 uri = "https://cnb-shim.herokuapp.com/v1/heroku/python?api=0.4&version=0.4.0&name=Python&stacks=heroku-18,io.buildpacks.stacks.bionic"
 
 [[dependencies]]
-uri = "urn:cnb:registry:heroku/procfile@0.6.0"
+uri = "urn:cnb:registry:heroku/procfile@0.6.1"
 
 [[dependencies]]
 uri = "wetty/"
