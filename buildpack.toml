@@ -2,10 +2,12 @@ api = "0.4"
 
 [buildpack]
 id = "jkutner/web-tty"
-version = "0.1.1"
+version = "0.1.2"
 name = "Web TTY"
 homepage = "https://github.com/jkutner/web-tty-buildpack"
-description = "Terminal access in browser over http/https"
+description = "Terminal access to a container in a browser over http/https"
+keywords = ["terminal", "wetty", sshd"]
+license = "MIT"
 
 [[order]]
   [[order.group]]
