@@ -22,6 +22,8 @@ jobs:
             - id: setup-pack
               name: Setup Pack
               uses: buildpacks/github-actions/setup-pack@v4.0.0
+              with:
+                pack-version: "0.17.0"
             - id: package
               name: Package Buildpack
               run: |
